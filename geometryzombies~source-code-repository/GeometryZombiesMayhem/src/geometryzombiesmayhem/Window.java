@@ -32,7 +32,7 @@ public class Window extends PanelP implements Paintable {
         
         this.setBounds(frame);
         
-        this.add(trigger = new EventTrigger(this) {
+        super.add(trigger = new EventTrigger(this) {
             @Override
             public void mouseTriggered(MouseEvent event) {
                 if(!isDraggeable) return;
