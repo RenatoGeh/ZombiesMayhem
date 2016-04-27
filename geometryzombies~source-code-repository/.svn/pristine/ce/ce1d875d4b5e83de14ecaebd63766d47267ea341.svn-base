@@ -1,0 +1,64 @@
+#This is a generated template configuration file for Zombies Mayhem!.
+#It allows the user to configure the game according to one's taste.
+#Note that if you do not know what the argument does, it is best to leave it at that.
+
+#The syntax is simple:
+# - '#' stands for a comment mark. Anything that starts with '#' will be ignored by the parser.
+# - '[...]' stands for a section mark. Its only function is to organize the file. The parser tracks these sections and marks them.
+# - 'var=boolean', where 'var' is the boolean variable to be modified and 'boolean' a true/false argument"
+# - 'var="arg"', where 'var' is the string/enum variable to be modified and '"arg"' is either an enumeration element or a string. Double quotes are not obligatory.
+# - 'var=arg', where 'var' is a numeral variable to be modified and 'arg' is a number in any numerical system (i.e.: hexadecimal, binary, decimal).
+# - 'var='arg'', where 'var' is a variable to be modified and 'arg' an ASCII character.
+#
+#Most of the options listed in this file is already available through the game's menu. Those not listed there should not be modified by the end-user.
+
+# @author Renato Lui Geh
+
+[Game]
+
+[Controls]
+
+up="w"
+left="a"
+right="d"
+down="s"
+
+sprint="shift"
+bullet_time="q"
+fire_mode="f"
+interact="e"
+
+reload="r"
+aim="button3"
+shoot="button1"
+mouse_secondary="button2"
+
+flashlight="v"
+
+[Graphics]
+
+anti_aliasing=true
+alpha_interpolation="Quality"
+color_rendering="Quality"
+dithering=true
+fractional_metrics=true
+rendering="Quality"
+stroke_control="Normalize"
+text_anti_aliasing=true
+interpolation="Bilinear"
+
+resizable=true
+
+resolution="Default"
+screen_mode="Window"
+filter="Default"
+
+[Audio]
+
+master_vol=50
+music_vol=50
+fx_vol=50
+radio_vol=50
+
+radio_fader="Only Fade Out"
+radio_playstyle="Normal"

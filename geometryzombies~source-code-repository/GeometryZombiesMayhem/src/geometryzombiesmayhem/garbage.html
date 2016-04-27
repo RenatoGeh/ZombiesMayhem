@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Garbage</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <div>
+            <p>
+                This is where I put my junk. Code snippets that are working (or not)
+                and I just don't want to throw them away, be it for further reference
+                or just because I (that is, my laziness) wouldn't be able to create 
+                all that code again from scratch.
+            </p>
+            <br>
+            <p>
+                Anyways, have fun looking at some old code!
+            </p>
+            <br>
+            <p>
+                This piece of code here is a word wrapper. It uses my line breaker
+                structure, but implements new features by handling all the words
+                to break the lines before they reach <code>MAX_CHARS</code>.
+            </p>
+            <p>This one piece of code here is the main function.</p>
+            <code><p>
+                String text = "this is yet another test. It it it By testing it further, one tests it to its test limit, testing oneself and itself at the same time!";
+                int MAX_CHARS = 30;
+
+                boolean isDone = false;
+                int i = 0;
+
+                int n = ((int)text.length()/MAX_CHARS);
+                if((float)text.length()/MAX_CHARS > n)
+                    n++;
+
+                String[] formatted = new String[n];
+                System.err.println(n);
+
+                for(int j=0;j<formatted.length;j++) {
+                    formatted[j] = "";
+                }
+
+                while(!isDone) {
+                    if(text.length() > MAX_CHARS && (i+1) * MAX_CHARS < text.length()) {
+                        if(i==0) {
+                            String line = text.substring(i * MAX_CHARS, (i + 1) * MAX_CHARS);
+                            String word = getLastWord(text.split(" "), line.split(" "));
+
+                            if(word.isEmpty()) {
+                                formatted[i] = line;
+                            } else {
+                                formatted[i] = getRest(line.split(" "), word);
+                                formatted[i+1] = word + " ";
+                            }                    
+                        } else {
+                            String line, original;
+
+                            if(!formatted[i].isEmpty()) {
+                                line = eraseFirstWord(text.substring(i * MAX_CHARS, (i + 1) * MAX_CHARS));     
+                                original = eraseFirstWord(text.substring(i * MAX_CHARS, text.length()));
+                            } else {
+                                line = text.substring(i * MAX_CHARS, (i + 1) * MAX_CHARS);
+                                original = text.substring(i * MAX_CHARS, text.length());
+                            }
+                            String word = getLastWord(original.split(" "), line.split(" "));
+
+                            if(word.isEmpty()) {
+                                formatted[i] += line;
+                            } else {
+                                formatted[i] += getRest(line.split(" "), word);
+                                formatted[i+1] = word + " ";
+                            }
+                        }
+
+                    } else if(text.length() > MAX_CHARS) {
+                        String line  = text.substring((i * MAX_CHARS), text.length());
+
+                        if(formatted[i].isEmpty()) {
+                            formatted[i] = line;
+                        } else {
+                            formatted[i] += eraseFirstWord(line);
+                        }
+
+                        isDone = true;
+                    } else {
+                        if(formatted[i].isEmpty())
+                            formatted[i] = text;
+                        else
+                            formatted[i] += text;
+
+                        isDone = true;
+                    }
+                    i++;
+                }
+
+                for(int k=0;k<formatted.length;k++) {
+                    if(formatted[k].startsWith(" ")) {
+                        formatted[k] = formatted[k].substring(1, formatted[k].length());
+                    }
+                }
+
+                for(String s : formatted)
+                    System.err.println(s);
+                    </p></code>
+            
+            <code><p>
+                private String getRest(String[] full, String word) {
+                String[] result = new String[full.length - 1];
+                String s = "";
+
+                for(int i=0;i<result.length;i++) {
+                    if(!full[i].equals(word))
+                        result[i] = full[i];
+                    else
+                        continue;
+                }
+
+                for(int i=0;i<result.length;i++) {
+                    if(i==result.length-1)
+                        s += result[i];
+                    else
+                        s += result[i] + " ";
+                }
+
+                return s;
+            }
+
+            private String eraseFirstWord(String current) {
+                String[] words = current.split(" ");
+                String result = "";
+
+                for(int i=1;i<words.length;i++) {
+                    if(i==words.length-1)
+                        result += words[i];
+                    else
+                        result += words[i] + " ";
+                }
+
+                return result;
+            }
+
+            private String getLastWord(String[] full, String[] line) {
+                String word = "";
+
+                for(int i=0;i<line.length;i++) {
+                    if(line[i].equals(full[i]))
+                        continue;
+                    else {
+                        word = full[i];
+                    }
+                }
+                return word;
+            }
+            </p></code>
+            
+            <p>Main Menu:
+            
+            
+            
+            package geometryzombiesmayhem;
+
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.ImageObserver;
+import java.util.ArrayList;
+
+/**
+ * <p>Main Menu</p>
+ * 
+ * <p>
+ *  This class is supposed to handle all the functionality
+ *  of the Main Menu.
+ * </p>
+ * 
+ * <p>
+ *  The Main Menu refers to the first menu the user encounters.
+ * </p>
+ * 
+ * <p>
+ *  The main menu is connected to the following menus and frames:
+ * </p>
+ * 
+ * <ul>
+ *  <li> Single-player menu (SingleMenu.java) </li>
+ *  <li> Options menu (OptionsMenu.java) </li>
+ *  <li> Multi-player menu (MultiMenu.java) </li>
+ *  <li> Extras menu (ExtrasMenu.java) </li>
+ * </ul>
+ * 
+ * @see OptionsMenu
+ * @see ExtrasMenu
+ * @see GameFrame
+ * @see MultiMenu
+ * @see SingleMenu
+ * 
+ * @version 0.0.1
+ * 
+ * @author Renato Lui Geh
+ */
+public class MainMenu {    
+    private ArrayList<Image> mainButtons;
+    private Image singleButton, multiButton, optionsButton, extrasButton, exitButton;
+    private Image buttonPanel, logoPanel, infoPanel;
+    private Image nameLabel, logoImage;
+    
+    private Vector2D buttonPanelPosition, logoPanelPosition;
+    
+    private TextBox infoText;
+    
+    private ArrayList<Rectangle2D> buttonsBounds = new ArrayList<>();
+    
+    private ArrayList<ImageButton> buttons = new ArrayList<>();
+    
+    private ImageObserver io = new ImageObserver() {
+        @Override
+        public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+            return true;
+        }
+    };
+    
+    public MainMenu() {
+        initFinals();
+        initButtons();
+        initPanels();
+        initPositions();
+        initInfo();
+    }
+    
+    private void initFinals() {
+        hoverButtons.add(singleHover);
+        hoverButtons.add(multiHover);
+        hoverButtons.add(optionsHover);
+        hoverButtons.add(extrasHover);
+        
+        unselectButtons.add(singleUnselect);
+        unselectButtons.add(multiUnselect);
+        unselectButtons.add(optionsUnselect);
+        unselectButtons.add(extrasUnselect);
+    }
+    
+    private void initButtons() {     
+        for(int i=0;i<hoverButtons.size();i++) {
+            buttons.add(new ImageButton(hoverButtons.get(i), unselectButtons.get(i),
+                    new Vector2D(50, 0).add(25, 55 + (i * hoverButtons.get(i).getHeight(null) + 10)), i));
+        }
+        
+//        singleButton = singleUnselect;
+//        multiButton = multiUnselect;
+//        optionsButton = optionsUnselect;
+//        extrasButton = extrasUnselect;
+//        exitButton = defaultExit;
+//        
+//        mainButtons = new ArrayList<>();
+//        mainButtons.add(singleButton);
+//        mainButtons.add(multiButton);
+//        mainButtons.add(optionsButton);
+//        mainButtons.add(extrasButton);
+    }
+    
+    private void initPanels() {
+        buttonPanel = this.getPanelImage("buttonpanel_1.png");
+        logoPanel = this.getPanelImage("buttonpanel_2.png");
+        infoPanel = this.getPanelImage("buttonpanel_3.png");
+    }
+    
+    private void initInfo() {
+        infoText = new TextBox(logoPanelPosition.add(20, logoPanel.getHeight(null)), 
+                "", Color.LIGHT_GRAY, 0, new Font(Font.DIALOG, Font.PLAIN, 15), 40);
+    }
+    
+    private void initPositions() {
+        buttonPanelPosition = new Vector2D(50, 0);
+        logoPanelPosition = buttonPanelPosition.add(370, 0);
+        
+//        for(int i=0;i<mainButtons.size();i++) {            
+//            Rectangle2D.Float rect = new Rectangle2D.Float((int)buttonPanelPosition.getX() + 25, 
+//                    (int)buttonPanelPosition.getY() + 55 + (i * (mainButtons.get(i).getHeight(null) + 10)),
+//                    mainButtons.get(i).getWidth(null), mainButtons.get(i).getHeight(null));
+//            buttonsBounds.add(rect);
+//        }
+    }
+    
+    private String getInfo(int i) {
+        infoText.refreshPosition(logoPanelPosition.add(20, logoPanel.getHeight(null) + infoPanel.getHeight(null)/3.0f));
+        switch(i) {
+            case BUTTON_NONE:
+                return INFO_NONE;
+            case BUTTON_SINGLE:
+                return INFO_SINGLE;
+            case BUTTON_MULTI:
+                return INFO_MULTI;
+            case BUTTON_OPTIONS:
+                return INFO_OPTIONS;
+            case BUTTON_EXTRAS:
+                return INFO_EXTRAS;
+            case BUTTON_EXIT:
+                return INFO_EXIT;
+        }
+        
+        return "null";
+    }
+    
+    public void handleInfo(int i) {
+        infoText.setText(this.getInfo(i));
+    }
+    
+    public void paint(Graphics2D g2, Component c) {
+        this.managePositions(g2, c);
+        this.refreshButtons();
+    }
+    
+    private void refreshButtons() {
+        for(int i=0;i<buttons.size();i++)
+            buttons.get(i).refreshButtons(
+                    new Vector2D(50, 0).add(25, 55 + (i * hoverButtons.get(i).getHeight(null) + 10)));
+        
+//        if(buttonsBounds.get(0).getWidth() == -1) {
+//            for(int i=0;i<mainButtons.size();i++) {
+//                Rectangle2D.Float rect = new Rectangle2D.Float((int)buttonPanelPosition.getX() + 25, 
+//                        (int)buttonPanelPosition.getY() + 55 + (i * (mainButtons.get(i).getHeight(null) + 10)),
+//                        mainButtons.get(i).getWidth(null), mainButtons.get(i).getHeight(null));
+//                buttonsBounds.set(i, rect);
+//            }
+//        }
+    }
+    
+    private void managePositions(Graphics2D g2, Component c) {
+        g2.drawImage(buttonPanel, (int)buttonPanelPosition.getX(), (int)buttonPanelPosition.getY(), c);
+        
+        for(ImageButton ib : buttons)
+            ib.paint(g2, c);
+        
+//        for(int i=0;i<mainButtons.size();i++) {
+//            g2.drawImage(mainButtons.get(i), 
+//                    (int)buttonPanelPosition.getX() + 25, 
+//                    (int)buttonPanelPosition.getY() + 55 + (i * (mainButtons.get(i).getHeight(null) + 10)),
+//                    c);
+//        }
+        
+//        for(Rectangle2D r : buttonsBounds) 
+//            g2.draw(r);
+        
+        g2.drawImage(exitButton, (int)(Vector2D.BOTTOM_RIGHT.getX() - 100), (int)(Vector2D.BOTTOM_RIGHT.getY() - 85), c);
+        
+        g2.drawImage(logoPanel, (int)logoPanelPosition.getX(), (int)logoPanelPosition.getY(), c);
+        g2.drawImage(infoPanel, (int)logoPanelPosition.getX(), (int)logoPanelPosition.getY() + logoPanel.getHeight(null), c);
+        
+        this.infoText.paint(c, g2);
+    }
+    
+    private Image getButtonImage(String filename) {
+        return ZM.toolkit.createImage(AssetManager.load("resources/interface/buttons/main/" + filename));
+    }
+    
+    private Image getPanelImage(String filename) {
+        return ZM.toolkit.createImage(AssetManager.load("resources/interface/panels/" + filename));
+    }
+    
+    public int checkButtons(Vector2D position) {
+        for(ImageButton ib : buttons) {
+            int id = ib.checkButtons(position);
+            
+            if(id != ImageButton.BUTTON_NONE)
+                return id;
+        }
+        
+        return BUTTON_NONE;
+        
+//        int x = (int) position.getX();
+//        int y = (int) position.getY();
+//        
+//        for(int i=0;i<hoverButtons.size();i++) {
+//            if(buttonsBounds.get(i).contains(position.getX(), position.getY())) {
+//                mainButtons.set(i, hoverButtons.get(i));
+//                return i;
+//            } else {
+//                if(!mainButtons.get(i).equals(unselectButtons.get(i)))
+//                    mainButtons.set(i, unselectButtons.get(i));
+//            }
+//        }
+//        
+//        if(x >= (int)(Vector2D.BOTTOM_RIGHT.getX() -100) && 
+//                x <= (int)((Vector2D.BOTTOM_RIGHT.getX() - 100) + exitButton.getWidth(null))) {
+//            if(y >= (int)(Vector2D.BOTTOM_RIGHT.getY() - 85) &&
+//                    y <= (int)((Vector2D.BOTTOM_RIGHT.getY() - 85) + exitButton.getHeight(null))) {
+//                return BUTTON_EXIT;
+//            }
+//        }
+//        return BUTTON_NONE;
+    }
+    
+    @Deprecated
+    public int checkMouseLocation(Vector2D position) {        
+        int x = (int) position.getX();
+        int y = (int) position.getY();
+        
+        for(int i=0;i<hoverButtons.size();i++) {
+            if(x >= (buttonPanelPosition.getX() + 25) && 
+                    x <= (buttonPanelPosition.getX() + 25 + mainButtons.get(i).getWidth(null))) {
+                if(y >= (buttonPanelPosition.getY() + 55 + (i*(mainButtons.get(i).getHeight(null) + 20))) &&
+                        y <= (buttonPanelPosition.getY() + 55 + (i*(mainButtons.get(i).getHeight(null) + 50)))) {
+                    mainButtons.set(i, hoverButtons.get(i));
+                    return i;
+                } else {
+                    if(!mainButtons.get(i).equals(unselectButtons.get(i)))
+                        mainButtons.set(i, unselectButtons.get(i));
+                }
+            } else {
+                if(!mainButtons.get(i).equals(unselectButtons.get(i)))
+                    mainButtons.set(i, unselectButtons.get(i));
+            }
+        }
+        
+        if(x >= (int)(Vector2D.BOTTOM_RIGHT.getX() -100) && 
+                x <= (int)((Vector2D.BOTTOM_RIGHT.getX() - 100) + exitButton.getWidth(null))) {
+            if(y >= (int)(Vector2D.BOTTOM_RIGHT.getY() - 85) &&
+                    y <= (int)((Vector2D.BOTTOM_RIGHT.getY() - 85) + exitButton.getHeight(null))) {
+                return BUTTON_EXIT;
+            }
+        }
+        return BUTTON_NONE;
+    }
+    
+    private final ArrayList<Image> hoverButtons = new ArrayList<>();
+    
+    private final Image singleHover = this.getButtonImage("singleplayer.png");
+    private final Image multiHover = this.getButtonImage("multiplayer.png");
+    private final Image optionsHover = this.getButtonImage("options.png");
+    private final Image extrasHover = this.getButtonImage("extras.png");
+    
+    private final ArrayList<Image> unselectButtons = new ArrayList<>();
+    
+    private final Image singleUnselect = this.getButtonImage("singleplayer_not.png");
+    private final Image multiUnselect = this.getButtonImage("multiplayer_not.png");
+    private final Image extrasUnselect = this.getButtonImage("extras_not.png");
+    private final Image optionsUnselect = this.getButtonImage("options_not.png");
+    
+    private final Image defaultExit = this.getButtonImage("exit.png");
+    
+    public static final int BUTTON_NONE = 5;
+    
+    public static final int BUTTON_SINGLE = 0;
+    public static final int BUTTON_MULTI = 1;
+    public static final int BUTTON_OPTIONS = 2;
+    public static final int BUTTON_EXTRAS = 3;
+    public static final int BUTTON_EXIT = 4;
+    
+    private final String INFO_NONE = "Welcome to Zombies Mayhem! " + "Version: " + ZM.version + ". " + ZM.versioning;
+    private final String INFO_SINGLE = "In a Forever Alone style, "
+            + "Singleplayer allows you to fight through waves of enemies "
+            + "in the \"Zombie Apocalypse\" mode all by yourself, "
+            + "uncover the mysterious reason behind the zombie infection in the "
+            + "Campaign mode or just chillax on a Free Play world.";
+    private final String INFO_MULTI = "Fight alongside (or against) your friends (or foes) "
+            + "on Co-Op, Versus or Shared Campaign!";
+    private final String INFO_OPTIONS = "Adjust audio preferences, controls and video "
+            + "options for optimal pwnage! Note: some options may require restart.";
+    private final String INFO_EXTRAS = "Find out more about the \"Zombies Mayhem!\" world!"
+            + " Meet the crew and find out how to get in contact with us and send some"
+            + " of them feedback!";
+    private final String INFO_EXIT = "sudo apt-get a-life. Get your ass out there nurd.";
+}
+
+        </>
+    </body>
+</html>
